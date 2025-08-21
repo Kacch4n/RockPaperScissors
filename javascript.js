@@ -14,20 +14,29 @@ function getHumanChoice () {
     return humanChoice;
 }
 
+function playGame () {
+
 let humanScore = 0;
 let computerScore = 0;
 
-function playRound (humanChoice, computerChoice) {
-    let caseInsensitiveHumanChoice = humanChoice.toLowerCase();
-    let caseInsensitiveComputerChoice = computerChoice.toLowerCase();
-    if ((caseInsensitiveHumanChoice === "paper" && caseInsensitiveComputerChoice === "rock") || (caseInsensitiveHumanChoice === "rock" && caseInsensitiveComputerChoice === "scissors") || (caseInsensitiveHumanChoice === "scissors" && caseInsensitiveComputerChoice === "paper")) {
-        console.log(`You win! ${caseInsensitiveHumanChoice} beats ${caseInsensitiveComputerChoice}`);
+    function playRound () {
+    let humanSelection = getComputerChoice();
+    let computerSelection = getHumanChoice();
+    if ((humanSelection === "paper" && computerSelection === "rock") || (humanSelection === "rock" && computerSelection === "scissors") || (humanSelection === "scissors" && computerSelection === "paper")) {
+        console.log(`You win! ${humanSelection} beats ${computerSelection}`);
         humanScore++;
-    } else if ((caseInsensitiveHumanChoice === "paper" && caseInsensitiveComputerChoice === "scissors") || (caseInsensitiveHumanChoice === "rock" && caseInsensitiveComputerChoice === "paper") || (caseInsensitiveHumanChoice === "scissors" && caseInsensitiveComputerChoice === "rock")){
-        console.log(`You lose! ${caseInsensitiveComputerChoice} beats ${caseInsensitiveHumanChoice}`);
+    } else if ((humanSelection === "paper" && computerSelection === "scissors") || (humanSelection === "rock" && computerSelection === "paper") || (humanSelection === "scissors" && computerSelection === "rock")){
+        console.log(`You lose! ${humanSelection} beats ${computerSelection}`);
         computerScore++;
     } else {
         console.log("It's a tie! Try again!");
     }
     console.log(`${humanScore}-${computerScore}`);
 }
+
+for (;(computerScore < 5) && (humanScore < 5);) {
+    playRound();
+}
+
+}
+
