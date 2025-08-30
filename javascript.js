@@ -9,34 +9,60 @@ function getComputerChoice () {
     }
 }
 
-function getHumanChoice () {
-    let humanChoice = prompt();
-    return humanChoice;
-}
-
-function playGame () {
-
 let humanScore = 0;
 let computerScore = 0;
 
+const container = document.querySelector("#lastSelection");
+const score = document.querySelector("#currentScore");
+
+function playGame (humanSelection) {
+
     function playRound () {
-    let humanSelection = getComputerChoice();
-    let computerSelection = getHumanChoice();
-    if ((humanSelection === "paper" && computerSelection === "rock") || (humanSelection === "rock" && computerSelection === "scissors") || (humanSelection === "scissors" && computerSelection === "paper")) {
-        console.log(`You win! ${humanSelection} beats ${computerSelection}`);
+    let computerSelection = getComputerChoice ();
+    
+    if (computerScore === 5) {
+        const announcingLine = document.createElement("div");
+        const announcement = document.createTextNode("Computer won last round!!");
+        announcingLine.appendChild(announcement);
+        document.body.insertBefore(announcingLine, score);
+        announcingLine.setAttribute("id","announcingLine");
+        humanScore = 0;
+        computerScore = 0;
+    } else if (humanScore === 5) {
+        const announcingLine = document.createElement("div");
+        const announcement = document.createTextNode("You won last round!!");
+        announcingLine.appendChild(announcement);
+        document.body.insertBefore(announcingLine, score);
+        announcingLine.setAttribute("id","announcingLine"); 
+        humanScore = 0;
+        computerScore = 0;
+    } else if ((humanSelection === "paper" && computerSelection === "rock") || (humanSelection === "rock" && computerSelection === "scissors") || (humanSelection === "scissors" && computerSelection === "paper")) {
+        container.textContent = `You win! ${humanSelection} beats ${computerSelection}`;
         humanScore++;
+        score.textContent = `${humanScore}-${computerScore}`;
+        let announcingLineHuman = document.querySelector("#announcingLine");
+        announcingLineHuman.remove();
     } else if ((humanSelection === "paper" && computerSelection === "scissors") || (humanSelection === "rock" && computerSelection === "paper") || (humanSelection === "scissors" && computerSelection === "rock")){
-        console.log(`You lose! ${humanSelection} beats ${computerSelection}`);
+        container.textContent = `You lose! ${computerSelection} beats ${humanSelection}`;
         computerScore++;
-    } else {
-        console.log("It's a tie! Try again!");
+        score.textContent = `${humanScore}-${computerScore}`;
+        let announcingLineComputer = document.querySelector("#announcingLine");
+        announcingLineComputer.remove();
+    } else if (humanSelection === computerSelection) {
+        container.textContent = `It's a tie! ${computerSelection} against ${humanSelection}. Try again!`;
+        score.textContent = `${humanScore}-${computerScore}`;
     }
-    console.log(`${humanScore}-${computerScore}`);
+    
 }
 
-for (;(computerScore < 5) && (humanScore < 5);) {
-    playRound();
-}
+playRound();
 
 }
 
+let buttons = document.querySelectorAll("button");
+
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+    playGame(button.id);
+});
+});
